@@ -2,4 +2,4 @@
 Implementacion de RAG en un vault de Obsidian
 
 ## Documentaciòn
-Consultar en: [git@github.com:k0k4depelover/RAG_Obsidian.git]
+Consultar en: git@github.com:k0k4depelover/RAG_Obsidian.git
