@@ -1,0 +1,21 @@
+[project]
+name = "rag-obsidian"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "kok4depelover", email = "oskarcermeno1@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "python-frontmatter>=1.1.0",
+    "qdrant-client>=1.9.0",
+    "requests>=2.31",
+]
+
+[project.scripts]
+rag-obsidian = "rag_obsidian:main"
+
+[build-system]
+requires = ["uv_build>=0.12.1,<0.13.0"]
+build-backend = "uv_build"
