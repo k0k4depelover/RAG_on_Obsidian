@@ -8,6 +8,7 @@ authors = [
 ]
 requires-python = ">=3.14"
 dependencies = [
+    "pytest>=9.1.1",
     "python-frontmatter>=1.1.0",
     "qdrant-client>=1.9.0",
     "requests>=2.31",
@@ -19,3 +20,9 @@ rag-obsidian = "rag_obsidian:main"
 [build-system]
 requires = ["uv_build>=0.12.1,<0.13.0"]
 build-backend = "uv_build"
+
+[tool.setuptools.packages.find]
+where =["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
