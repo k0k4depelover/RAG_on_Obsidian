@@ -53,30 +53,30 @@ def mock_vault(tmp_path):
 
     proj_dir = vault_dir / "project_dir"
     proj_dir.mkdir()
-    (proj_dir / "Ejemplo.md").write_text("# Bases de Datos")
+    (proj_dir / "proyecto1.md").write_text("# Bases de Datos")
 
     return vault_dir
 
 
 def test_walk_vault_basic_traversal_and_filters(mock_vault):
     found_files = list(walk_vault(mock_vault, exclude_dirs=["oculto_excluido"]))
-    found_names = [f for f in found_files]
+    found_names = [f.name for f in found_files]
 
     assert "nota1.md" in found_names
     assert "nota2.txt" not in found_names
     assert "config.md" not in found_names
     assert "nota_privada.md" not in found_names
-    assert "Ejemplo.md" in found_names
+    assert "proyecto1.md" in found_names
     assert len(found_files) == 2
 
 
 def test_walk_vault_include_dirs_filter(mock_vault):
     found_files = list(walk_vault(mock_vault, include_dirs=["project_dir"]))
 
-    found_files = [f for f in found_files]
+    found_names = [f.name for f in found_files]
 
-    assert "Ejemplo.md" in found_files
-    assert "nota1.md" not in found_files
+    assert "proyecto1.md" in found_names
+    assert "nota1.md" not in found_names
     assert len(found_files) == 1
 
 

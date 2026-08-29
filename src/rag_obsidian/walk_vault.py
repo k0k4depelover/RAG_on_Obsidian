@@ -1,31 +1,29 @@
-import os
+from collections.abc import Iterator
 from pathlib import Path
-from typing import List, Optional
+from typing import List
 
 
 def walk_vault(
-    valt_path: str,
-    include_dirs: Optional[List[str]] = None,
-    exclude_dirs: Optional[List[str]] = None,
-):
+    vault_path: Path,
+    include_dirs: List[str] | None = None,
+    exclude_dirs: List[str] | None = None,
+) -> Iterator[Path]:
 
-    vault_root = Path(valt_path).resolve()
+    exclude_dirs = set(exclude_dirs) if exclude_dirs else set()
+    include_dirs = set(include_dirs) if include_dirs else set()
 
-    exclude_set = set(exclude_dirs) if exclude_dirs else set()
-    include_set = set(include_dirs) if include_dirs else set()
+    for file_path in vault_path.rglob("*.md"):
 
-    for root, dirs, files in os.walk(vault_root):
-        current_dir = Path(root)
+        rel_path = file_path.relative_to(vault_path)
 
-        rel_path = current_dir.relative_to(vault_root)
+        if any(part.startswith(".") for part in rel_path.parts[:-1]):
+            continue
 
-        dirs[:] = [d for d in dirs if d.startswith(".") and d not in exclude_set]
+        if any(part in exclude_dirs for part in rel_path.parts[:-1]):
+            continue
 
-        if include_set:
-            parts = set(rel_path.parts)
-            if not parts.intersection(include_set) and rel_path != Path("."):
+        if include_dirs:
+            if not any(part in include_dirs for part in rel_path.parts[:-1]):
                 continue
 
-        for file in files:
-            if file.endswith(".md"):
-                yield current_dir / file
+        yield file_path
