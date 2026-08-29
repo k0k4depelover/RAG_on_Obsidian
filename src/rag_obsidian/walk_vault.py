@@ -2,6 +2,23 @@ from collections.abc import Iterator
 from pathlib import Path
 from typing import List
 
+"""
+    Funcion para recorrer el vault de Obsidian, toma la ruta de tipo Path,
+    y parametros como directorios a incluir y directorios a excluir, retornando
+    un iterador de las rutas.
+
+    Primero define un array (set) con la lista de archivos incluidos implicitamente y
+    excluidos.
+
+    Recorre todos los archivos con terminacion '.md' y ajusta la ruta a una relativa.
+
+    Posteriormente realiza validaciones, si el archivo inicia con '.' lo ignora.
+
+    Valida si esta en exclude_dirs para ignorarlo.
+
+
+"""
+
 
 def walk_vault(
     vault_path: Path,
