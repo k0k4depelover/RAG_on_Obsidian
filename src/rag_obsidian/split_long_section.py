@@ -11,6 +11,14 @@ from typing import List
     detiene el flujo y devuelve los datos.
 
 
+    Ademas, utiliza un mecanismo para escoger un breakpoint valido, definiendolo por la prioridad que definimos
+    primero buscamos saltos de linea, despues buscamos puntos y en ultima instancia utilizamos comas, esto
+    para no cortar el contexto de los embeddings.
+
+    Finalmente agregamos un rango de overlaps, por lo que si un texto tiene 1001 caracteres no va dividirse
+    por longitudes de 1000 y 1, si no de aproximadamente 800 y 200, dependiendo de la estructura,
+    finalmente retornamos los chunks
+
 
 """
 
@@ -18,7 +26,6 @@ from typing import List
 def split_long_section(
     section_text: str, max_chars: int = 1000, overlap_chars: int = 200
 ) -> List[str]:
-
     if len(section_text) <= max_chars:
         return [section_text]
 
@@ -28,20 +35,23 @@ def split_long_section(
 
     while start < text_length:
         end = start + max_chars
-
-        if end >= text_length:
-            chunks.append(section_text[start:].strip())  # Strip ?
+        if end > text_length:
+            chunks.append(section_text[start:].strip())
             break
 
-        # Pendiente de documentar
-        breakpoint_index = section_text.rfind("\n", start + max_chars // 2, end)
+        breakpoint_index = section_text.rfind("\n", (start + max_chars) // 2)
         if breakpoint_index == -1:
-            breakpoint_index = section_text.rfind(".", start + max_chars // 2, end)
+            breakpoint_index = section_text.rfind(".", (start + max_chars) // 2)
+        if breakpoint_index == -1:
+            breakpoint_index = section_text.rfind(",", (start + max_chars) // 2)
 
-        chunks_str = section_text[start:end].strip()
-        if chunks_str:
-            chunks.append(chunks_str)
+        if breakpoint_index != 1:
+            end = breakpoint_index + 1
+
+        chunk = section_text[start:end]
+
+        if chunk:
+            chunks.append(chunk)
 
         start = end - overlap_chars
-
     return chunks
