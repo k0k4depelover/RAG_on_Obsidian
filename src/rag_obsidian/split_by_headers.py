@@ -12,7 +12,7 @@ from typing import List, Tuple
     Detalle del contexto.
 
     ### Antecedentes
-    Más detalle aún.
+    Más detalle aún. uv creo que era, o no
 
     ## Objetivos
     Texto de objetivos.
@@ -42,7 +42,7 @@ def split_by_headers(content: str) -> List[Tuple[str, str]]:
     # Lista de líneas de texto "normal"
     # que se van acumulando hasta que aparece el siguiente encabezado
     current_text: List[str] = []
-    header_regex = re.compile(r"(^#{1-6})\s+(.+)")
+    header_regex = re.compile(r"(^#{1,6})\s+(.+)")
 
     for line in lines:
         match = header_regex.match(line)
@@ -58,6 +58,7 @@ def split_by_headers(content: str) -> List[Tuple[str, str]]:
 
             while header_stack and header_stack[-1][0] >= level:
                 header_stack.pop()
+
             header_stack.append((level, title))
         else:
             current_text.append(line)

@@ -504,6 +504,11 @@ dependencies = [
     { name = "requests" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "pytest", specifier = ">=9.1.1" },
@@ -511,6 +516,9 @@ requires-dist = [
     { name = "qdrant-client", specifier = ">=1.9.0" },
     { name = "requests", specifier = ">=2.31" },
 ]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest", specifier = ">=9.1.1" }]
 
 [[package]]
 name = "requests"
