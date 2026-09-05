@@ -1,3 +1,5 @@
+from typing import List
+
 import pytest
 
 from rag_obsidian.split_by_headers import split_by_headers
@@ -195,19 +197,19 @@ def test_split_long_section_falls_back_to_period_when_no_newline():
 
 def test_split_long_sections_falls_back_to_period_when_no_newline_or_dot():
     """
-    Si no hay '\\n' en la zona de busqueda pero SI hay un '.', debe
-    usar el punto como corte inteligente (segundo intento del if).
-    Si no, en ultima instancia busca por comas.
+    Si no hay '\\n' ni '.' en la zona de busqueda pero SI hay una ',',
+    debe usar la coma como corte inteligente (tercer intento del if).
 
-    texto: 14 'a' + ',' + 30 'a' (el ',' cae en el indice 14, dentro
+    texto: 14 'a' + ',' + 20 'a' (el ',' cae en el indice 14, dentro
     de la zona de busqueda [10, 20) de la primera iteracion, y no
-    hay ningun '\\n' en todo el texto).
+    hay ningun '\\n' ni '.' en todo el texto).
     """
     text = "a" * 14 + "," + "a" * 20
+
     result = split_long_section(text, max_chars=20, overlap_chars=5)
 
-    assert result == "a" * 14 + ","
-    assert len(result[0]) < 20
+    assert result[0] == "a" * 14 + ","
+    assert len(result[0]) <= 20
 
 
 def test_split_long_section_prefers_newline_over_period():
@@ -246,7 +248,7 @@ def test_split_long_section_overlap_between_consecutive_chunks():
     inicio de chunk[1] (primeros 5 chars), y lo mismo entre
     chunk[1] y chunk[2].
     """
-    text = "0123456789" * 5  # longitud total: 50, sin '\n' ni '.'
+    text = "0123456789" * 5
 
     result = split_long_section(text, max_chars=20, overlap_chars=5)
 
@@ -278,7 +280,8 @@ def test_split_long_section_all_chunks_within_max_chars():
 
     result = split_long_section(text, max_chars=100, overlap_chars=20)
 
-    assert all(len(chunk) <= 100 for chunk in result)
+    # assert all(len(chunk) <= 100 for chunk in result)
+    assert max(len(chunk) for chunk in result) <= 100
 
 
 def test_split_long_section_no_empty_chunks():

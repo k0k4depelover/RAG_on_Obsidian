@@ -35,20 +35,20 @@ def split_long_section(
 
     while start < text_length:
         end = start + max_chars
-        if end > text_length:
+        if end >= text_length:
             chunks.append(section_text[start:].strip())
             break
 
-        breakpoint_index = section_text.rfind("\n", (start + max_chars) // 2)
+        breakpoint_index = section_text.rfind("\n", (start + max_chars) // 2, end)
         if breakpoint_index == -1:
-            breakpoint_index = section_text.rfind(".", (start + max_chars) // 2)
+            breakpoint_index = section_text.rfind(".", (start + max_chars) // 2, end)
         if breakpoint_index == -1:
-            breakpoint_index = section_text.rfind(",", (start + max_chars) // 2)
+            breakpoint_index = section_text.rfind(",", (start + max_chars) // 2, end)
 
-        if breakpoint_index != 1:
+        if breakpoint_index != -1:
             end = breakpoint_index + 1
 
-        chunk = section_text[start:end]
+        chunk = section_text[start:end].strip()
 
         if chunk:
             chunks.append(chunk)
