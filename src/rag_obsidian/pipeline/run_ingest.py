@@ -7,9 +7,14 @@ la una jerarquia de archivo, ejemplo:
 
 """
 
+import json
 from pathlib import Path
 
 import yaml
+from auxiliars.split_by_headers import split_by_headers
+from auxiliars.split_long_section import split_long_section
+from auxiliars.walk_vault import walk_vault
+from chunks import Chunk
 
 VAULT_PATH = Path("/home/oskar/Desktop/Obsidian-Vault")
 OUTPUT_PATH = Path("data/processed/chunks.jsonl")
@@ -23,4 +28,46 @@ def load_params() -> dict:
 def build_chunks(
     vault_path: Path, include_dirs, exclude_dirs, max_chars, overlap_chars
 ):
-    return
+    for file_path in walk_vault(
+        vault_path,
+        include_dirs=include_dirs,
+        exclude_dirs=exclude_dirs,
+        overlap_chars=overlap_chars,
+    ):
+        content = file_path.read_text(encoding="utf-8")
+        rel_path = file_path.relative_to(vault_path)
+        for header_path, section_text in split_by_headers(content):
+            pieces = split_long_section(
+                section_text, max_chars=max_chars, overlap_chars=overlap_chars
+            )
+
+            for i, piece in enumerate(pieces):
+                yield Chunk(
+                    text=piece,
+                    source_path=str(rel_path),
+                    note_title=file_path.stem,
+                    header_path=header_path,
+                    chunk_index=i,
+                )
+
+
+def main():
+    params = load_params()
+    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+    total = 0
+
+    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
+
+        for chunk in build_chunks(
+            vault_path=VAULT_PATH,
+            include_dirs=params.get("include_dirs"),
+            exclude_dirs=params.get("exclude_dirs"),
+            overlap_chars=params.get("overlap_chars"),
+        ):
+            f.write(json.dumps(as_dicts(chunk), ensure_ascii=False) + "\n")
+    print(f"[ingest] {total} chunks escritos en {OUTPUT_PATH}")
+
+
+if __name__ == "__main__.py":
+    main()
