@@ -1,0 +1,16 @@
+ingest:
+  include_dirs: []
+  exclude_dirs: [".obsidian"]
+  max_chars: 900
+  overlap_chars: 200
+
+embed:
+  model_name: "BAAI/bge-m3"
+  batch_size: 12
+  max_length: 1024
+  use_fp16: false
+
+qdrant:
+  collection_name: "rag_obsidian"
+  host: localhost
+  port: 6333
