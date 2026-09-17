@@ -109,7 +109,6 @@ def main():
 
     dense_vectors = result["dense_vecs"]
 
-    # Pendiente de revisar
     rows = []
     for chunk, vector in zip(chunks, dense_vectors):
         rows.append(

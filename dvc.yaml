@@ -1,0 +1,46 @@
+
+stages:
+
+  ingest:
+    cmd: python src/rag_obsidian/pipeline/run_ingest.py
+    deps:
+      - src/rag_obsidian/pipeline/run_ingest.py
+      - src/rag_obsidian/pipeline/configuration/load_params.py
+      - src/rag_obsidian/auxiliars/walk_vault.py
+      - src/rag_obsidian/auxiliars/split_by_headers.py
+      - src/rag_obsidian/auxiliars/split_long_section.py
+      - src/rag_obsidian/chunks.py
+      - data/raw
+    params:
+      - ingest.include_dirs
+      - ingest.exclude_dirs
+      - ingest.max_chars
+      - ingest.overlap_chars
+    outs:
+      - data/processed/chunks.jsonl
+
+  embed:
+    cmd: python src/rag_obsidian/pipeline/run_embed.py
+    deps:
+      - src/rag_obsidian/pipeline/run_embed.py
+      - src/rag_obsidian/pipeline/configuration/load_params.py
+      - data/processed/chunks.jsonl
+    params:
+      - embed.model_name
+      - embed.batch_size
+    outs:
+      - data/processed/embeddings.parquet
+
+  index:
+    cmd: python src/rag_obsidian/pipeline/run_index.py
+    deps:
+      - src/rag_obsidian/pipeline/run_index.py
+      - src/rag_obsidian/pipeline/configuration/load_params.py
+      - data/processed/embeddings.parquet
+    params:
+      - qdrant.collection_name
+      - qdrant.host
+      - qdrant.port
+    outs:
+      - data/processed/index_manifest.json:
+          cache: false

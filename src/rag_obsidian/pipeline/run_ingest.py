@@ -8,6 +8,7 @@ la una jerarquia de archivo, ejemplo:
 """
 
 import json
+from dataclasses import asdict
 from pathlib import Path
 
 from auxiliars.split_by_headers import split_by_headers
@@ -60,7 +61,7 @@ def main():
             exclude_dirs=params.get("exclude_dirs"),
             overlap_chars=params.get("overlap_chars"),
         ):
-            f.write(json.dumps(as_dicts(chunk), ensure_ascii=False) + "\n")
+            f.write(json.dumps(asdict(chunk), ensure_ascii=False) + "\n")
     print(f"[ingest] {total} chunks escritos en {OUTPUT_PATH}")
 
 

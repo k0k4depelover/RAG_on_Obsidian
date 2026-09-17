@@ -1,0 +1,6 @@
+.venv
+.pytest_cache
+uv.lock
+.python_version
+.vscode
+*__pycache__
