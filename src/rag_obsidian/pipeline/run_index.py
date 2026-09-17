@@ -3,9 +3,10 @@ import uuid
 from pathlib import Path
 
 import pandas as pd
-from configuration.load_params import load_params
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, PointStruct, VectorParams
+
+from rag_obsidian.configuration.load_params import load_params
 
 EMBEDDINGS_PATH = Path("data/processed/embeddings.parquet")
 MANIFEST_PATH = Path("data/processed/index_manifest.json")

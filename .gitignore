@@ -6,3 +6,5 @@ uv.lock
 *__pycache__
 *.obsidian
 data/raw/Obsidian-Vault
+data/processed/
+qdrant_storage/

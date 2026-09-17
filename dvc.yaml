@@ -5,7 +5,7 @@ stages:
     cmd: python src/rag_obsidian/pipeline/run_ingest.py
     deps:
       - src/rag_obsidian/pipeline/run_ingest.py
-      - src/rag_obsidian/pipeline/configuration/load_params.py
+      - src/rag_obsidian/configuration/load_params.py
       - src/rag_obsidian/auxiliars/walk_vault.py
       - src/rag_obsidian/auxiliars/split_by_headers.py
       - src/rag_obsidian/auxiliars/split_long_section.py
@@ -23,7 +23,7 @@ stages:
     cmd: python src/rag_obsidian/pipeline/run_embed.py
     deps:
       - src/rag_obsidian/pipeline/run_embed.py
-      - src/rag_obsidian/pipeline/configuration/load_params.py
+      - src/rag_obsidian/configuration/load_params.py
       - data/processed/chunks.jsonl
     params:
       - embed.model_name
@@ -35,7 +35,7 @@ stages:
     cmd: python src/rag_obsidian/pipeline/run_index.py
     deps:
       - src/rag_obsidian/pipeline/run_index.py
-      - src/rag_obsidian/pipeline/configuration/load_params.py
+      - src/rag_obsidian/configuration/load_params.py
       - data/processed/embeddings.parquet
     params:
       - qdrant.collection_name

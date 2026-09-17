@@ -23,8 +23,9 @@ import json
 from pathlib import Path
 
 import pandas as pd
-from configuration.load_params import load_params
 from FlagEmbedding import BGEM3FlagModel
+
+from rag_obsidian.configuration.load_params import load_params
 
 CHUNKS_PATH = Path("data/processed/chunks.jsonl")
 OUTPUT_PATH = Path("data/processed/embeddings.parquet")

@@ -11,11 +11,11 @@ import json
 from dataclasses import asdict
 from pathlib import Path
 
-from auxiliars.split_by_headers import split_by_headers
-from auxiliars.split_long_section import split_long_section
-from auxiliars.walk_vault import walk_vault
-from chunks import Chunk
-from configuration.load_params import load_params
+from rag_obsidian.auxiliars.split_by_headers import split_by_headers
+from rag_obsidian.auxiliars.split_long_section import split_long_section
+from rag_obsidian.auxiliars.walk_vault import walk_vault
+from rag_obsidian.chunks import Chunk
+from rag_obsidian.configuration import load_params
 
 VAULT_PATH = Path("/home/oskar/Desktop/Obsidian-Vault")
 OUTPUT_PATH = Path("data/processed/chunks.jsonl")
