@@ -23,7 +23,7 @@ import json
 from pathlib import Path
 
 import pandas as pd
-import yaml
+from configuration.load_params import load_params
 from FlagEmbedding import BGEM3FlagModel
 
 CHUNKS_PATH = Path("data/processed/chunks.jsonl")
@@ -34,11 +34,6 @@ Esta funcion se encarga de cargar los parametros del archivo de configuracion
 finalmente utiliza el metodo safe_load que convierte un archivo yaml en un
 diccionario anidado de python
 """
-
-
-def load_params() -> dict:
-    with open("params.yaml", encoding="utf-8") as f:
-        return yaml.safe_load(f)["embeed"]
 
 
 """
@@ -80,7 +75,7 @@ def main():
 
     if not chunks:
         raise ValueError(
-            f"No se encontraron chunks en {CHUNK_PATH}, debe ejecutarse el ingest primero."
+            f"No se encontraron chunks en {CHUNKS_PATH}, debe ejecutarse el ingest primero."
         )
 
     model = BGEM3FlagModel(params["model_name"], use_fp16=params.get("use_fp6", False))
@@ -105,7 +100,7 @@ def main():
 
     result = model.encode(
         texts,
-        batch_size=["batch_size"],
+        batch_size=params["batch_size"],
         max_length=params.get("max_length", 1024),
         return_dense=True,
         return_sparse=False,

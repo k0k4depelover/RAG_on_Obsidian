@@ -1,4 +1,4 @@
-from walk_vault import walk_vault
+from rag_obsidian.auxiliars.walk_vault import walk_vault
 
 if __name__ == "__main__":
     test_vault = "/home/oskar/Desktop/RAG_Obsidian"

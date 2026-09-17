@@ -1,16 +1,17 @@
+# Configuraciones para todo el proyecto.
+
 ingest:
   include_dirs: []
-  exclude_dirs: [".obsidian"]
-  max_chars: 900
+  exclude_dirs: []
+  max_chars: 1000
   overlap_chars: 200
 
 embed:
   model_name: "BAAI/bge-m3"
-  batch_size: 12
   max_length: 1024
-  use_fp16: false
+  use_fp16: true
 
 qdrant:
   collection_name: "rag_obsidian"
-  host: localhost
+  host: "localhost"
   port: 6333

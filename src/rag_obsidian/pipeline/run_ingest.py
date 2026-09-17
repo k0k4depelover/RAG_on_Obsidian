@@ -10,19 +10,14 @@ la una jerarquia de archivo, ejemplo:
 import json
 from pathlib import Path
 
-import yaml
 from auxiliars.split_by_headers import split_by_headers
 from auxiliars.split_long_section import split_long_section
 from auxiliars.walk_vault import walk_vault
 from chunks import Chunk
+from configuration.load_params import load_params
 
 VAULT_PATH = Path("/home/oskar/Desktop/Obsidian-Vault")
 OUTPUT_PATH = Path("data/processed/chunks.jsonl")
-
-
-def load_params() -> dict:
-    with open("params.yml", encoding="utf-8") as f:
-        return yaml.safe_load(f)["ingest"]
 
 
 def build_chunks(

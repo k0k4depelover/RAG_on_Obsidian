@@ -2,8 +2,8 @@ from typing import List
 
 import pytest
 
-from rag_obsidian.split_by_headers import split_by_headers
-from rag_obsidian.split_long_section import split_long_section
+from rag_obsidian.auxiliars.split_by_headers import split_by_headers
+from rag_obsidian.auxiliars.split_long_section import split_long_section
 
 
 def unit_test_split_by_headers_single_header():

@@ -2,8 +2,8 @@ from dataclasses import is_dataclass
 
 import pytest
 
+from rag_obsidian.auxiliars.walk_vault import walk_vault
 from rag_obsidian.chunks import Chunk
-from rag_obsidian.walk_vault import walk_vault
 
 # TEST UNITARIO
 
