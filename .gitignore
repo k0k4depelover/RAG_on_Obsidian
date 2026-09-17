@@ -4,3 +4,5 @@ uv.lock
 .python_version
 .vscode
 *__pycache__
+*.obsidian
+data/raw/Obsidian-Vault
