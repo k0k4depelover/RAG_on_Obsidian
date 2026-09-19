@@ -15,9 +15,9 @@ from rag_obsidian.auxiliars.split_by_headers import split_by_headers
 from rag_obsidian.auxiliars.split_long_section import split_long_section
 from rag_obsidian.auxiliars.walk_vault import walk_vault
 from rag_obsidian.chunks import Chunk
-from rag_obsidian.configuration import load_params
+from rag_obsidian.configuration.load_params import load_params
 
-VAULT_PATH = Path("/home/oskar/Desktop/Obsidian-Vault")
+VAULT_PATH = Path("data/raw")
 OUTPUT_PATH = Path("data/processed/chunks.jsonl")
 
 
@@ -28,7 +28,6 @@ def build_chunks(
         vault_path,
         include_dirs=include_dirs,
         exclude_dirs=exclude_dirs,
-        overlap_chars=overlap_chars,
     ):
         content = file_path.read_text(encoding="utf-8")
         rel_path = file_path.relative_to(vault_path)
@@ -62,8 +61,9 @@ def main():
             overlap_chars=params.get("overlap_chars"),
         ):
             f.write(json.dumps(asdict(chunk), ensure_ascii=False) + "\n")
+            total += 1
     print(f"[ingest] {total} chunks escritos en {OUTPUT_PATH}")
 
 
-if __name__ == "__main__.py":
+if __name__ == "__main__":
     main()
