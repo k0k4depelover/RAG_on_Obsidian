@@ -26,8 +26,8 @@ stages:
       size: 242
     - path: src/rag_obsidian/configuration/load_params.py
       hash: md5
-      md5: 4665e2fe1ba2c294b86b0976a843ec50
-      size: 175
+      md5: 1d6f417db64d3ba9d42664c7db27829a
+      size: 177
     - path: src/rag_obsidian/pipeline/run_ingest.py
       hash: md5
       md5: f159f4fa81022ae098119dcbeaa69dc7
@@ -43,3 +43,52 @@ stages:
       hash: md5
       md5: 00b8ba4e5c58be5e3cee5efffe748f6f
       size: 2997223
+  embed:
+    cmd: python src/rag_obsidian/pipeline/run_embed.py
+    deps:
+    - path: data/processed/chunks.jsonl
+      hash: md5
+      md5: 00b8ba4e5c58be5e3cee5efffe748f6f
+      size: 2997223
+    - path: src/rag_obsidian/configuration/load_params.py
+      hash: md5
+      md5: 1d6f417db64d3ba9d42664c7db27829a
+      size: 177
+    - path: src/rag_obsidian/pipeline/run_embed.py
+      hash: md5
+      md5: b56e931ef92ca18c961b4a8ee13e7051
+      size: 4278
+    params:
+      params.yaml:
+        embed.batch_size: 8
+        embed.model_name: BAAI/bge-m3
+    outs:
+    - path: data/processed/embeddings.parquet
+      hash: md5
+      md5: 5493de031494ec295ed36324439628cc
+      size: 28115201
+  index:
+    cmd: python src/rag_obsidian/pipeline/run_index.py
+    deps:
+    - path: data/processed/embeddings.parquet
+      hash: md5
+      md5: 5493de031494ec295ed36324439628cc
+      size: 28115201
+    - path: src/rag_obsidian/configuration/load_params.py
+      hash: md5
+      md5: 1d6f417db64d3ba9d42664c7db27829a
+      size: 177
+    - path: src/rag_obsidian/pipeline/run_index.py
+      hash: md5
+      md5: 6cf04130fdd07683abc39042c9b24130
+      size: 2721
+    params:
+      params.yaml:
+        qdrant.collection_name: rag_obsidian
+        qdrant.host: localhost
+        qdrant.port: 6333
+    outs:
+    - path: data/processed/index_manifest.json
+      hash: md5
+      md5: 4e2e626b11a44039b4940d2286e8c073
+      size: 89

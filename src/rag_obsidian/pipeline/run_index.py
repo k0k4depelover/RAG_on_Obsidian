@@ -13,13 +13,13 @@ MANIFEST_PATH = Path("data/processed/index_manifest.json")
 
 
 def ensure_collection(client: QdrantClient, name: str, vector_size: int):
-    existing = [c.name for c in client.get_collections().collections()]
+    existing = [c.name for c in client.get_collections().collections]
     if name in existing:
         print(f"[index] Collection {name} ya existe")
         return
     client.create_collection(
         collection_name=name,
-        vector_config=VectorParams(size=vector_size, distance=Distance.COSINE),
+        vectors_config=VectorParams(size=vector_size, distance=Distance.COSINE),
     )
 
     print(f"[index] Coleccion '{name}' creada (dim={vector_size}, distancia=coseno).")
@@ -28,6 +28,29 @@ def ensure_collection(client: QdrantClient, name: str, vector_size: int):
 def build_point(row: pd.Series) -> PointStruct:
     point_id = str(
         uuid.uuid5(uuid.NAMESPACE_URL, f"{row['source_path']}::{row['chunk_index']}")
+    )
+
+    vector = row["vector"]
+    vector = vector.tolist() if hasattr(vector, "tolist") else list(vector)
+
+    tags = row["tags"]
+    tags = (
+        tags.tolist()
+        if hasattr(tags, "tolist")
+        else list(tags) if tags is not None else []
+    )
+
+    return PointStruct(
+        id=point_id,
+        vector=vector,
+        payload={
+            "text": row["text"],
+            "source_path": row["source_path"],
+            "note_title": row["note_title"],
+            "header_path": row["header_path"],
+            "tags": tags,
+            "chunk_index": int(row["chunk_index"]),
+        },
     )
 
 
