@@ -10,7 +10,7 @@ embed:
   model_name: "BAAI/bge-m3"
   max_length: 1024
   use_fp16: true
-
+  batch_size: 8
 qdrant:
   collection_name: "rag_obsidian"
   host: "localhost"

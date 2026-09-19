@@ -71,7 +71,7 @@ podemos acceder a las claves.
 
 
 def main():
-    params = load_params()
+    params = load_params("embed")
     chunks = load_chunks(CHUNKS_PATH)
 
     if not chunks:

@@ -47,7 +47,7 @@ def build_chunks(
 
 
 def main():
-    params = load_params()
+    params = load_params("ingest")
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
 
     total = 0
@@ -58,6 +58,7 @@ def main():
             vault_path=VAULT_PATH,
             include_dirs=params.get("include_dirs"),
             exclude_dirs=params.get("exclude_dirs"),
+            max_chars=params.get("max_chars"),
             overlap_chars=params.get("overlap_chars"),
         ):
             f.write(json.dumps(asdict(chunk), ensure_ascii=False) + "\n")

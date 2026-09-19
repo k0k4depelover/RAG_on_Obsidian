@@ -1,0 +1,45 @@
+schema: '2.0'
+stages:
+  ingest:
+    cmd: python src/rag_obsidian/pipeline/run_ingest.py
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: 048c0310bcb8673609a1b616985cd627.dir
+      size: 2150439
+      nfiles: 509
+    - path: src/rag_obsidian/auxiliars/split_by_headers.py
+      hash: md5
+      md5: 69c45c7629c6cdf4ac1ea63809aa7c63
+      size: 2033
+    - path: src/rag_obsidian/auxiliars/split_long_section.py
+      hash: md5
+      md5: e1b0d683f076975ea69303f97199b693
+      size: 1944
+    - path: src/rag_obsidian/auxiliars/walk_vault.py
+      hash: md5
+      md5: 5c800e78b8c681d7f36dadb8af48ed08
+      size: 1321
+    - path: src/rag_obsidian/chunks.py
+      hash: md5
+      md5: 89fd96047eaae68d6c49f3ab9519328f
+      size: 242
+    - path: src/rag_obsidian/configuration/load_params.py
+      hash: md5
+      md5: 4665e2fe1ba2c294b86b0976a843ec50
+      size: 175
+    - path: src/rag_obsidian/pipeline/run_ingest.py
+      hash: md5
+      md5: f159f4fa81022ae098119dcbeaa69dc7
+      size: 2289
+    params:
+      params.yaml:
+        ingest.exclude_dirs: []
+        ingest.include_dirs: []
+        ingest.max_chars: 1000
+        ingest.overlap_chars: 200
+    outs:
+    - path: data/processed/chunks.jsonl
+      hash: md5
+      md5: 00b8ba4e5c58be5e3cee5efffe748f6f
+      size: 2997223

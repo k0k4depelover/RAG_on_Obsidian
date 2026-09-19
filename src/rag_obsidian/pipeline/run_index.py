@@ -32,7 +32,7 @@ def build_point(row: pd.Series) -> PointStruct:
 
 
 def main():
-    params = load_params()
+    params = load_params("qdrant")
     df = pd.read_parquet(EMBEDDINGS_PATH)
 
     if df.empty:
