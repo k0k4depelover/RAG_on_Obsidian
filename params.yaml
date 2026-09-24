@@ -15,3 +15,13 @@ qdrant:
   collection_name: "rag_obsidian"
   host: "localhost"
   port: 6333
+
+retrieval:
+  top_k: 5
+
+llm:
+  provider: "ollama"
+  model_name: "qwen2.5:7b"
+  host: "localhost"
+  port: 11434
+  temperature: 0.2
