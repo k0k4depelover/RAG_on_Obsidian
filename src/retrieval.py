@@ -9,18 +9,18 @@ from qdrant_client import QdrantClient
 from rag_obsidian.configuration.load_params import load_params
 
 
-def embed_question(question: str, model: str, use_fp16: bool) -> list[float]:
+def embed_question(question: str, model_name: str, use_fp16: bool) -> list[float]:
     """
     Vectoriza la pregunta con el modelo BGE-M3
     Se encarga de quitar el mmodelo de la GPU al terminar para que
     pueda usar la VRAM Ollama
     """
-    print(f"[Retrieval] Cargando {model}. USE_FP16: {use_fp16}")
+    print(f"[Retrieval] Cargando {model_name}. USE_FP16: {use_fp16}")
 
-    model = BGEM3FlagModel(model, use_fp16)
+    model = BGEM3FlagModel(model_name, use_fp16=use_fp16)
 
     result = model.encode(
-        [question], return_dense=False, return_sparse=False, return_colbert_vecs=False
+        [question], return_dense=True, return_sparse=False, return_colbert_vecs=False
     )
 
     vector = result["dense_vecs"][0].tolist()
@@ -41,11 +41,11 @@ def search_qdrant(
     similares (coseno) al vector de la pregunta.
     """
 
-    results = client.search(
+    results = client.query_points(
         collection_name=collection_name,
-        query_vector=query_vector,
+        query=query_vector,
         limit=top_k,
-    )
+    ).points
     return results
 
 
@@ -61,7 +61,7 @@ def build_context(results) -> str:
             f"[Fragmento {i} | fuente: {payload['source_path']} | seccion: {payload['header_path']}]\n"
             f"{payload['text']}"
         )
-    return "\n\n.join(blocks)"
+    return "\n\n".join(blocks)
 
 
 def build_prompt(question: str, context: str) -> str:
